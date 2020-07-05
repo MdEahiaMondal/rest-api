@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::apiResource('buyers', 'Buyer\BuyerController', ['only' => ['index', 'show']]);
+Route::apiResource('categories', 'Category\CategoryController');
+Route::apiResource('products', 'Product\ProductController', ['only' => ['index', 'show']]);
+Route::apiResource('sellers', 'Seller\SellerController', ['only' => 'index', 'show']);
+Route::apiResource('transactions', 'Category\TransactionController', ['only' => ['index', 'show']]);
+Route::apiResource('users', 'User\UserController');
