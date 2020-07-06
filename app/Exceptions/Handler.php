@@ -2,11 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Traits\apiResponser;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use  apiResponser;
     /**
      * A list of the exception types that are not reported.
      *
@@ -52,4 +55,29 @@ class Handler extends ExceptionHandler
     {
         return parent::render($request, $exception);
     }
+
+
+
+    /**
+     * Create a response object from the given validation exception.
+     *
+     * @param  \Illuminate\Validation\ValidationException  $e
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function convertValidationExceptionToResponse(ValidationException $e, $request)
+    {
+        if ($e->response) {
+            return $e->response;
+        }
+        return $request->expectsJson()
+            ? $this->invalidJson($request, $e)
+            : $this->invalid($request, $e);
+    }
+
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        return $this->errorResponse($exception->errors(), 422);
+    }
+
 }
