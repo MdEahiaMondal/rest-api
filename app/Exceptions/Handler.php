@@ -99,10 +99,11 @@ class Handler extends ExceptionHandler
 
         }
 
-        if (config('APP_DEBUG')){
+        return parent::render($request, $exception);
+       /* if (config('APP_DEBUG')){
             return parent::render($request, $exception);
-        }
-        return  $this->errorResponse('Unexpected Exception. Try later',500); // database connection problem or when you are develop your site
+        }*/
+//        return  $this->errorResponse('Unexpected Exception. Try later',500); // database connection problem or when you are develop your site
     }
 
 
