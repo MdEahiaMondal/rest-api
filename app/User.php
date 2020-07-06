@@ -32,6 +32,17 @@ class User extends Authenticatable
         'admin'
     ];
 
+    // Defining A Mutator
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtolower($value);
+    }
+
+    // Defining An Accessor
+    public function getNameAttribute($value)
+    {
+       return ucwords($value);
+    }
 
 
     public function isVerified()
