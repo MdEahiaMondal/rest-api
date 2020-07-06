@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -56,11 +57,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof ValidationException)
+        if ($exception instanceof ValidationException) // validation errors
         {
             return $this->convertValidationExceptionToResponse($exception, $request);
         }
-        if ($exception instanceof ModelNotFoundException)
+        if ($exception instanceof ModelNotFoundException) // model error(if search like user model but does not exist any result)
         {
             $model_name = strtolower(class_basename($exception->getModel()));
             return  $this->errorResponse("Does not exist {$model_name} with the specified identificator", 404);
@@ -72,6 +73,9 @@ class Handler extends ExceptionHandler
         if ($exception instanceof AuthorizationException) // who is register user but does not permission some system
         {
             return  $this->errorResponse($exception->getMessage(), 403);
+        }
+        if ($exception instanceof NotFoundHttpException){ // url wrong
+            return  $this->errorResponse('The specified url can not be found', 404);
         }
         return parent::render($request, $exception);
     }
