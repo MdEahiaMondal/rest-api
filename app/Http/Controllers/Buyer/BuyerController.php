@@ -34,5 +34,6 @@ class BuyerController extends ApiController
     public function destroy($id)
     {
         //
+
     }
 }
