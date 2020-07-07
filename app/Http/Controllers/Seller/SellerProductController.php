@@ -30,7 +30,7 @@ class SellerProductController extends ApiController
         $data = $request->all();
         $data['status'] = Product::AVAILABLE_PRODUCT;
         $data['seller_id'] = $user;
-        $data['image'] = '1.jpg';
+        $data['image'] = $request->image->store(''); // store('path', 'filesystem_name')
 
         $product = Product::create($data);
         return $this->showOne($product, 201);
