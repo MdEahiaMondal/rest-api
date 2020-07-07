@@ -11,6 +11,9 @@ class Product extends Model
     const AVAILABLE_PRODUCT = 'available';
     const UNAVAILABLE_PRODUCT = 'unavailable';
 
+    protected $hidden = [ // when we get collection then it will automatically hidden pivot table or column
+        'pivot'
+    ];
     protected $fillable = [
         'name',
         'description',

@@ -11,6 +11,7 @@ class Buyer extends User
         parent::boot(); // mains it has parent model that name is user
         static::addGlobalScope(new BuyerScope());
     }
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
