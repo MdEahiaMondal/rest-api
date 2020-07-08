@@ -12,7 +12,8 @@ trait apiResponser
 
     private function successResponse($data, $code)
     {
-        return response()->json(['data' => $data, 'code' => $code], $code);
+        $data['code'] = $code;
+        return response()->json($data, $code);
     }
 
     protected function errorResponse($message, $code){
@@ -20,13 +21,28 @@ trait apiResponser
     }
 
     protected function showAll(Collection $collection, $code = 200){
+        if ($collection->isEmpty()){
+            return $this->successResponse(['data' => $collection], $code);
+        }
+        $transformer = $collection->first()->transformer;
+        $collection = $this->makeDataTransformer($collection, $transformer);
        return $this->successResponse($collection, $code);
     }
-    protected function showOne(Model $model, $code = 200){
-        return $this->successResponse($model, $code);
+    protected function showOne(Model $instance, $code = 200){
+        $transformer = $instance->first()->transformer;
+        $instance = $this->makeDataTransformer($instance, $transformer);
+        return $this->successResponse($instance, $code);
     }
 
     protected function showMessages($message, $code = 200){
         return $this->successResponse($message, $code);
     }
+
+
+    protected function makeDataTransformer($data, $transformer){
+        $resource = fractal($data, new $transformer)->toArray();
+        return $resource;
+    }
+
+
 }
