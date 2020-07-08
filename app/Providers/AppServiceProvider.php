@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         User::updated(function ($user) {
-           if ($user->isDirty('email')){
+           if ($user->isDirty('email')){ // only when change email
                Mail::to($user)->send(new UserMailChange($user));
            }
         });
