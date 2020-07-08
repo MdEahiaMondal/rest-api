@@ -28,6 +28,12 @@ class DatabaseSeeder extends Seeder
        Transaction::truncate();
        DB::table('category_product')->truncate();
 
+       // need to stop all event or listener
+        User::flushEventListeners();
+        Category::flushEventListeners();
+        Product::flushEventListeners();
+        Transaction::flushEventListeners();
+
        factory(User::class, 1000)->create();
        factory(Category::class, 100)->create();
        factory(Product::class, 1000)->create()->each(function ($product){
