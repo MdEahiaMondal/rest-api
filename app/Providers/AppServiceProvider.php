@@ -30,12 +30,17 @@ class AppServiceProvider extends ServiceProvider
     {
 
         User::created(function ($user) { /*($user) you can call instance*/
-            Mail::to($user)->send(new UserCreated($user));
+            retry(5, function () use($user){ // some times our mail is not send for any type of error it is not unexpected. so this region we user laravel helper function retry, first parameter is how many time it will use, second is a callback that excuit it and third parameter is how many time for wait.
+                Mail::to($user)->send(new UserCreated($user));
+            },100);
         });
 
         User::updated(function ($user) {
            if ($user->isDirty('email')){ // only when change email
-               Mail::to($user)->send(new UserMailChange($user));
+               retry(5, function () use($user) {
+                   Mail::to($user)->send(new UserMailChange($user));
+               }, 100);
+
            }
         });
 
