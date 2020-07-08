@@ -25,4 +25,8 @@ trait apiResponser
     protected function showOne(Model $model, $code = 200){
         return $this->successResponse($model, $code);
     }
+
+    protected function showMessages($message, $code = 200){
+        return $this->successResponse($message, $code);
+    }
 }
