@@ -7,6 +7,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 trait apiResponser
@@ -31,6 +32,7 @@ trait apiResponser
         $collection = $this->shortData($collection, $transformer);
         $collection = $this->paginate($collection);
         $collection = $this->makeDataTransformer($collection, $transformer);
+        $collection = $this->cacheResponse($collection);
        return $this->successResponse($collection, $code);
     }
     protected function showOne(Model $instance, $code = 200){
@@ -90,5 +92,12 @@ trait apiResponser
         return $resource;
     }
 
+    protected function cacheResponse($data){
+        $url = request()->fullUrl(); // set name for cache
+        info(Cache::get($url));
+        return Cache::remember($url, 30/60, function () use($data){
+            return $data;
+        });
+    }
 
 }
