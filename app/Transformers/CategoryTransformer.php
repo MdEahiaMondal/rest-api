@@ -45,7 +45,7 @@ class CategoryTransformer extends TransformerAbstract
     public static function originalAttributes($index){
         $attributes = [
             'identifier' => 'id',
-            'name' => 'name',
+            'title' => 'name',
             'details' => 'description',
             'creationDate' => 'created_at',
             'lastChange' => 'updated_at',
