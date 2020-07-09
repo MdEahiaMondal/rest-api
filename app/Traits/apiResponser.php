@@ -25,6 +25,7 @@ trait apiResponser
             return $this->successResponse(['data' => $collection], $code);
         }
         $transformer = $collection->first()->transformer;
+        $collection = $this->shortData($collection, $transformer);
         $collection = $this->makeDataTransformer($collection, $transformer);
        return $this->successResponse($collection, $code);
     }
@@ -38,6 +39,15 @@ trait apiResponser
         return $this->successResponse($message, $code);
     }
 
+    protected function shortData(Collection $collection, $transformer)
+    {
+        if (request()->has('sort_by'))
+        {
+            $attribute = $transformer::originalAttributes(request()->sort_by);
+            $collection = $collection->sortBy->{$attribute};
+        }
+        return $collection;
+    }
 
     protected function makeDataTransformer($data, $transformer){
         $resource = fractal($data, new $transformer)->toArray();
