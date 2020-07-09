@@ -25,6 +25,7 @@ trait apiResponser
             return $this->successResponse(['data' => $collection], $code);
         }
         $transformer = $collection->first()->transformer;
+        $collection = $this->filterData($collection, $transformer);
         $collection = $this->shortData($collection, $transformer);
         $collection = $this->makeDataTransformer($collection, $transformer);
        return $this->successResponse($collection, $code);
@@ -37,6 +38,17 @@ trait apiResponser
 
     protected function showMessages($message, $code = 200){
         return $this->successResponse($message, $code);
+    }
+
+    protected function filterData(Collection $collection, $transformer){
+        foreach (request()->query() as $key => $value){
+            $attribute = $transformer::originalAttributes($key);
+            if ($attribute && $value)
+            {
+                $collection = $collection->where($attribute, $value);
+            }
+        }
+        return $collection;
     }
 
     protected function shortData(Collection $collection, $transformer)
