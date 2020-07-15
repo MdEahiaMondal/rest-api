@@ -45,3 +45,6 @@ Route::apiResource('transactions.sellers', 'Transaction\TransactionSellerControl
 Route::apiResource('users', 'User\UserController');
 Route::get('users/verify/{token}', 'User\UserController@verify')->name('verify');
 Route::get('users/{user}/resend', 'User\UserController@resend')->name('resend');
+
+
+Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
