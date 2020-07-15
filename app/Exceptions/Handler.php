@@ -3,11 +3,13 @@
 namespace App\Exceptions;
 
 use App\Traits\apiResponser;
+use http\Env\Request;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -89,6 +91,10 @@ class Handler extends ExceptionHandler
             return  $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
         }
 
+        if($exception instanceof TokenMismatchException){ // if you  use frontend web service then need csrf security for form submit then it will work
+            return redirect()->back()->withInput($request->input());
+        }
+
         // database related
         if ($exception instanceof QueryException){
             $error_code = $exception->errorInfo[1];
@@ -128,12 +134,26 @@ class Handler extends ExceptionHandler
         }
         return $request->expectsJson()
             ? $this->invalidJson($request, $e)
-            : $this->invalid($request, $e);
+            : $this->invalid($request, $e); // same work 1
     }
 
     protected function invalidJson($request, ValidationException $exception)
     {
+        if ($this->isFrontendWeb($request)) // same work 1
+        {
+            return $request->ajax() ? response()->json($exception->errors(), 422) : redirect()
+                ->back()
+                ->withInput($request->input())
+                ->withErrors($exception->errors());
+        }
         return $this->errorResponse($exception->errors(), 422);
     }
+
+
+    protected function isFrontendWeb($request){
+        return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
+    }
+
+
 
 }
