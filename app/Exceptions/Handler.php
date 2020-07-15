@@ -145,6 +145,7 @@ class Handler extends ExceptionHandler
                 ->back()
                 ->withInput($request->input())
                 ->withErrors($exception->errors());
+
         }
         return $this->errorResponse($exception->errors(), 422);
     }
