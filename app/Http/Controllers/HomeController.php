@@ -16,13 +16,21 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         return view('home');
+    }
+
+    public function personalToken()
+    {
+        return view('token.personal_token');
+    }
+    public function clientsToken()
+    {
+        return view('token.clients_token');
+    }
+    public function authorizedClientToken()
+    {
+        return view('token.authorize_clients_token');
     }
 }
