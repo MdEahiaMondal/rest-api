@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class ProductTransactionController extends ApiController
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index(Product $product){
         $transactions = $product->transactions;
         return $this->showAll($transactions);

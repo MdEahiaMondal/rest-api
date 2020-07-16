@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class SellerController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     public function index()
     {

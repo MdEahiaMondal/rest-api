@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class CategoryTransactionController extends ApiController
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index(Category $category){
         $transactions = $category->products()
         ->whereHas('transactions') // whereHas() works basically the same as has() but allows you to specify additional filters for the related model to check.

@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 class BuyerController extends ApiController
 {
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
         $buyers = Buyer::all();

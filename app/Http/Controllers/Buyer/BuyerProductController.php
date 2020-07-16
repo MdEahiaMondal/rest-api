@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class BuyerProductController extends apiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index(Buyer $buyer){
         $products = $buyer->transactions()->with('product')
         ->get()

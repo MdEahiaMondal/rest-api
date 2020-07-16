@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class BuyerSellerController extends apiController
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index(Buyer $buyer)
     {
         $sellers = $buyer->transactions()->with('product.seller') // nested relationship

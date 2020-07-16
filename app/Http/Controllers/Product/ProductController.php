@@ -21,27 +21,9 @@ class ProductController extends ApiController
        return $this->showAll($products);
     }
 
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-
     public function show(Product $product)
     {
         return $this->showOne($product);
     }
 
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-
-    public function destroy($id)
-    {
-        //
-    }
 }

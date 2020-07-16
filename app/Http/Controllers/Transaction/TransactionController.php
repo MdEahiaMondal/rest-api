@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class TransactionController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     public function index()
     {

@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class SellerCategoryController extends ApiController
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index(Seller $seller){
         $categories = $seller->products()
             ->whereHas('categories')
