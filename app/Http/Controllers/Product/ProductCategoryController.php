@@ -10,6 +10,12 @@ use SebastianBergmann\CodeCoverage\TestFixture\C;
 
 class ProductCategoryController extends ApiController
 {
+
+    public function __construct()
+    {
+        $this->middleware('client.credential')->only(['index']);
+    }
+
     public function index(Product $product){
         $categories = $product->categories;
         return $this->showAll($categories);

@@ -12,7 +12,7 @@ class CategoryController extends ApiController
 
     public function __construct()
     {
-        parent::__construct(); //this is come from ApiController (parent controller)
+        $this->middleware('client.credential')->only(['index', 'show']);
         $this->middleware('transform.input:'.CategoryTransformer::class)->only(['store', 'update']);
     }
 
